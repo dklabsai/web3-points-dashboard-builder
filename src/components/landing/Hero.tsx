@@ -5,7 +5,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import Particles from "@tsparticles/react";
-import type { Engine, Container } from "tsparticles-engine";
+import { type Engine, type Container } from "@tsparticles/slim";
 import { loadSlim } from "@tsparticles/slim";
 
 const Hero = () => {
@@ -102,7 +102,7 @@ const Hero = () => {
             particles: {
               number: {
                 value: 50,
-                density: { enable: true, area: 800 }
+                density: { enable: true, value_area: 800 }  // Changed area to value_area
               },
               color: { value: "#ffffff" },
               shape: { type: "circle" },
