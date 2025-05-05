@@ -1,8 +1,8 @@
 
 import React from 'react';
 import Particles from "@tsparticles/react";
-import type { Engine, Container } from "tsparticles-engine";
 import { loadSlim } from "@tsparticles/slim";
+import type { Engine, Container } from "tsparticles-engine";
 
 interface ParticlesBackgroundProps {
   className?: string;
@@ -44,7 +44,7 @@ const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ className }) 
         particles: {
           number: {
             value: 50,
-            density: { enable: true, value_area: 800 }
+            density: { enable: true, area: 800 }
           },
           color: { value: "#ffffff" },
           shape: { type: "circle" },
