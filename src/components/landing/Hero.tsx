@@ -1,17 +1,16 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Particles from "react-tsparticles";
+import { type Container, type Engine } from "tsparticles-engine";
 import { loadFull } from "tsparticles";
-import { Engine } from "tsparticles-engine";
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const Hero = () => {
   const { isConnected } = useAccount();
-  const router = useRouter();
+  const navigate = useNavigate();
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -31,62 +30,12 @@ export const Hero = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start scroll-mt-0"
     >
       {/* Particle Background */}
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        options={{
-          fullScreen: { enable: false },
-          background: {
-            color: {
-              value: "transparent",
-            },
-          },
-          fpsLimit: 30,
-          particles: {
-            color: {
-              value: "#ffffff",
-            },
-            links: {
-              color: "#ffffff",
-              distance: 150,
-              enable: true,
-              opacity: 0.2,
-              width: 1,
-            },
-            collisions: {
-              enable: false,
-            },
-            move: {
-              direction: "none",
-              enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: true,
-              speed: 0.5,
-              straight: false,
-            },
-            number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
-              value: 50,
-            },
-            opacity: {
-              value: 0.3,
-            },
-            shape: {
-              type: "circle",
-            },
-            size: {
-              value: { min: 1, max: 3 },
-            },
-          },
-          detectRetina: true,
-        }}
-        className="absolute inset-0 z-0"
-      />
+      <div id="tsparticles" className="absolute inset-0 z-0"></div>
+      {typeof window !== 'undefined' && (
+        <React.Suspense fallback={<div>Loading particles...</div>}>
+          <ParticlesComponent init={particlesInit} />
+        </React.Suspense>
+      )}
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900 z-10"></div>
@@ -122,7 +71,7 @@ export const Hero = () => {
         >
           {isConnected ? (
             <Button 
-              onClick={() => router.push('/dashboard')} 
+              onClick={() => navigate('/dashboard')} 
               size="lg"
               className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
@@ -172,5 +121,69 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
     </section>
+  );
+};
+
+// Create a separate component for the particles to allow for lazy loading
+const ParticlesComponent = ({ init }: { init: (engine: Engine) => Promise<void> }) => {
+  const { default: Particles } = React.lazy(() => import('react-tsparticles'));
+  
+  return (
+    <Particles
+      id="tsparticles"
+      init={init}
+      options={{
+        fullScreen: { enable: false },
+        background: {
+          color: {
+            value: "transparent",
+          },
+        },
+        fpsLimit: 30,
+        particles: {
+          color: {
+            value: "#ffffff",
+          },
+          links: {
+            color: "#ffffff",
+            distance: 150,
+            enable: true,
+            opacity: 0.2,
+            width: 1,
+          },
+          collisions: {
+            enable: false,
+          },
+          move: {
+            direction: "none",
+            enable: true,
+            outModes: {
+              default: "bounce",
+            },
+            random: true,
+            speed: 0.5,
+            straight: false,
+          },
+          number: {
+            density: {
+              enable: true,
+              area: 800,
+            },
+            value: 50,
+          },
+          opacity: {
+            value: 0.3,
+          },
+          shape: {
+            type: "circle",
+          },
+          size: {
+            value: { min: 1, max: 3 },
+          },
+        },
+        detectRetina: true,
+      }}
+      className="absolute inset-0 z-0"
+    />
   );
 };

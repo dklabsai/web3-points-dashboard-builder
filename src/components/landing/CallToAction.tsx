@@ -4,12 +4,12 @@ import { motion } from 'framer-motion';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Zap, ArrowRight } from 'lucide-react';
 
 export const CallToAction = () => {
   const { isConnected } = useAccount();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   return (
     <section className="py-20 min-h-screen flex flex-col justify-center bg-gradient-to-b from-gray-800 to-gray-900 snap-start scroll-mt-0">
@@ -38,7 +38,7 @@ export const CallToAction = () => {
                 <Button 
                   size="lg"
                   className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-10 py-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-lg"
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => navigate('/dashboard')}
                 >
                   <Zap className="mr-2 h-5 w-5" />
                   Go to Dashboard
