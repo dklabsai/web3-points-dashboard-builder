@@ -1,16 +1,27 @@
 
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { mainnet, sepolia, polygonMumbai } from 'wagmi/chains';
 
-// v1 wagmi setup
-const { chains, provider, webSocketProvider } = configureChains(
+// v1 wagmi setup with createConfig
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, sepolia, polygonMumbai],
   [publicProvider()]
 );
-const { connectors } = getDefaultWallets({ appName: 'dklabs.io', chains });
-export const wagmiClient = createClient({ autoConnect: true, connectors, provider, webSocketProvider });
+
+const { connectors } = getDefaultWallets({
+  appName: 'dklabs.io',
+  projectId: 'YOUR_PROJECT_ID', // Required for RainbowKit v2+
+  chains
+});
+
+export const wagmiClient = createConfig({
+  autoConnect: true,
+  connectors,
+  publicClient,
+  webSocketPublicClient
+});
 
 export { chains, WagmiConfig, RainbowKitProvider, darkTheme };

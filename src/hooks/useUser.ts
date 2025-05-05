@@ -1,9 +1,8 @@
-
 import { useEffect, useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 import { supabase, Database } from '@/lib/supabaseClient';
 
-interface UserProfile {
+export interface User {
   wallet: string;
   points: number;
   jobs_completed: number;
@@ -11,22 +10,22 @@ interface UserProfile {
 }
 
 interface UseUserReturn {
-  user: UserProfile | null;
+  user: User | null;
   loading: boolean;
   error: string | null;
   points: number;
   active: boolean;
-  leaderboard: UserProfile[];
+  leaderboard: User[];
   rank: number | null;
   toggleActive: () => void;
 }
 
 export function useUser(): UseUserReturn {
   const { address, isConnected } = useAccount();
-  const [user, setUser] = useState<UserProfile | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [points, setPoints] = useState(0);
   const [active, setActive] = useState(false);
-  const [leaderboard, setLeaderboard] = useState<UserProfile[]>([]);
+  const [leaderboard, setLeaderboard] = useState<User[]>([]);
   const [rank, setRank] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +57,7 @@ export function useUser(): UseUserReturn {
         return null;
       }
       
-      const profile: UserProfile = {
+      const profile: User = {
         wallet: userData.wallet,
         points: userData.points || 0,
         jobs_completed: userData.jobs_completed || 0,
@@ -104,7 +103,7 @@ export function useUser(): UseUserReturn {
         }
           
         if (data) {
-          setLeaderboard(data as UserProfile[]);
+          setLeaderboard(data as User[]);
           const pos = data.findIndex(u => u.wallet === user.wallet);
           setRank(pos !== -1 ? pos + 1 : null);
         }
