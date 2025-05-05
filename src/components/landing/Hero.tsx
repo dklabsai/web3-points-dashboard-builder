@@ -78,9 +78,9 @@ const Hero = () => {
       },
       move: {
         bounce: false,
-        direction: "none",
+        direction: "none" as const, // Fixed: using 'as const' to specify the correct type
         enable: true,
-        outMode: "bounce",
+        outMode: "bounce" as const, // Fixed: using 'as const' to specify the correct type
         random: false,
         speed: 2,
         straight: false,
