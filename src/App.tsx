@@ -16,7 +16,7 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <WagmiConfig client={wagmiClient}>
+    <WagmiConfig config={wagmiClient}>
       {/* Use darkTheme() with overrides, not a raw object */}
       <RainbowKitProvider chains={chains} theme={darkTheme({ borderRadius: 'medium' })}>
         <Router>
