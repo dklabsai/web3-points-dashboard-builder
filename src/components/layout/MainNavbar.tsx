@@ -64,16 +64,18 @@ export default function MainNavbar() {
           </Link>
         </div>
 
-        {/* Network Selector */}
+        {/* Network Selector & Settings Menu */}
         <div className="flex items-center space-x-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-2">
+              <Button variant="outline" size="sm" className="h-8 gap-2" title="Network Selector">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span>Ethereum</span>
+                <span className="hidden sm:inline">Ethereum</span>
+                <span className="sm:hidden">ETH</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Select Network</DropdownMenuLabel>
               <DropdownMenuItem className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
                 <span>Ethereum</span>
@@ -92,6 +94,7 @@ export default function MainNavbar() {
               size="icon"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className="w-8 h-8"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
                 <Sun className="h-4 w-4" />
@@ -103,7 +106,7 @@ export default function MainNavbar() {
             {/* Notifications */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="w-8 h-8 relative">
+                <Button variant="ghost" size="icon" className="w-8 h-8 relative" title="Notifications">
                   <Bell className="h-4 w-4" />
                   {notifications.some(n => !n.read) && (
                     <div className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></div>
@@ -135,7 +138,7 @@ export default function MainNavbar() {
             {/* User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full w-8 h-8">
+                <Button variant="ghost" size="icon" className="rounded-full w-8 h-8" title="User Menu">
                   <Avatar className="w-8 h-8">
                     <AvatarFallback className="bg-blue-900 text-blue-100 text-xs">
                       {address ? address.substring(2, 4).toUpperCase() : "??"}
