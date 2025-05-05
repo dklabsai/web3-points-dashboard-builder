@@ -70,11 +70,13 @@ export const Hero = () => {
                 straight: false,
               },
               number: {
-                density: {
-                  enable: true,
-                  // Remove the 'area' property which is causing the TypeScript error
-                  value_area: 800, // Updated to use value_area instead of area
-                },
+               density: {
+  enable: true,
+  area: {
+    value: 800       // ← use `.area.value` instead of `value_area`
+  }
+}
+,
                 value: 50,
               },
               opacity: {
