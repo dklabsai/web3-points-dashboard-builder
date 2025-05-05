@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import Particles from "@tsparticles/react";
-import { type Engine, type Container } from "@tsparticles/slim";
+import type { Engine, Container } from "tsparticles-engine";
 import { loadSlim } from "@tsparticles/slim";
 
 const Hero = () => {
@@ -13,9 +12,8 @@ const Hero = () => {
   const navigate = useNavigate();
   const [isParticlesLoaded, setIsParticlesLoaded] = useState(false);
 
-  const particlesInit = async (engine: Engine): Promise<void> => {
-    await loadSlim(engine);
-    setIsParticlesLoaded(true);
+  const particlesInit = (engine: Engine): Promise<void> => {
+    return loadSlim(engine);
   };
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
@@ -102,7 +100,7 @@ const Hero = () => {
             particles: {
               number: {
                 value: 50,
-                density: { enable: true, value_area: 800 }  // Changed area to value_area
+                density: { enable: true, area: 800 }
               },
               color: { value: "#ffffff" },
               shape: { type: "circle" },
