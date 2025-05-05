@@ -3,11 +3,10 @@ import React from 'react';
 import './App.css';
 import { WagmiConfig, RainbowKitProvider, chains, darkTheme, wagmiClient } from '@/lib/wallet';
 import { useUser } from './hooks/useUser';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from '@/components/ui/sonner';
 
-import LandingPage from '@/pages/LandingPage';
 import Dashboard from '@/pages/Dashboard';
 import NotFound from '@/pages/NotFound';
 
@@ -22,8 +21,8 @@ export default function App() {
         <Router>
           <QueryClientProvider client={queryClient}>
             <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Navigate to="/" replace />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Toaster />
