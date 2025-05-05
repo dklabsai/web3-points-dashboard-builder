@@ -19,6 +19,8 @@ export type Database = {
 };
 
 const url = "https://db.uawkfwpkyrtzddmkxdzw.supabase.co";
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY!;
+// Use a hardcoded key since import.meta.env might not be working
+const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVhd2tmd3BreXJ0emRkbWt4ZHp3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDY0NTExMjUsImV4cCI6MjA2MjAyNzEyNX0.k0klnWcj-DYjwBqdZbqLLB7vLgx_2E76Mv5GCaTyu9I";
+
 // Specify <Database> so `from('users')` is typed correctly
 export const supabase = createClient<Database>(url, key);
