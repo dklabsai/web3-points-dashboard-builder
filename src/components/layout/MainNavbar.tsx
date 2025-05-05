@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Moon, Sun, User, Settings, LogOut, Zap, Home } from 'lucide-react';
+import { Bell, Moon, Sun, User, Settings, LogOut, Zap, Home, Globe } from 'lucide-react';
 
 export default function MainNavbar() {
   const { address } = useAccount();
@@ -69,20 +69,24 @@ export default function MainNavbar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="h-8 gap-2" title="Network Selector">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span className="hidden sm:inline">Ethereum</span>
+                <Globe className="h-4 w-4 text-green-500" />
+                <span className="hidden sm:inline">Ethereum Network</span>
                 <span className="sm:hidden">ETH</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Select Network</DropdownMenuLabel>
+              <DropdownMenuLabel>Select Blockchain Network</DropdownMenuLabel>
               <DropdownMenuItem className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span>Ethereum</span>
+                <span>Ethereum Mainnet</span>
               </DropdownMenuItem>
               <DropdownMenuItem className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                <span>Polygon</span>
+                <span>Polygon PoS</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                <span>Arbitrum One</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

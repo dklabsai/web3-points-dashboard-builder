@@ -12,9 +12,9 @@ interface StatsPanelProps {
 
 export function StatsPanel({ points, jobsCompleted, ordersFulfilled, rank }: StatsPanelProps) {
   return (
-    <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardContent className="flex items-center p-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+      <Card className="bg-gray-800/50 border-gray-700 h-full">
+        <CardContent className="flex items-center p-4 h-full">
           <Cpu className="h-7 w-7 text-blue-400 mr-3 flex-shrink-0" />
           <div>
             <p className="text-sm text-gray-400">Total Points</p>
@@ -23,8 +23,8 @@ export function StatsPanel({ points, jobsCompleted, ordersFulfilled, rank }: Sta
         </CardContent>
       </Card>
       
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardContent className="flex items-center p-4">
+      <Card className="bg-gray-800/50 border-gray-700 h-full">
+        <CardContent className="flex items-center p-4 h-full">
           <Layers className="h-7 w-7 text-purple-400 mr-3 flex-shrink-0" />
           <div>
             <p className="text-sm text-gray-400">Jobs Completed</p>
@@ -33,8 +33,8 @@ export function StatsPanel({ points, jobsCompleted, ordersFulfilled, rank }: Sta
         </CardContent>
       </Card>
       
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardContent className="flex items-center p-4">
+      <Card className="bg-gray-800/50 border-gray-700 h-full">
+        <CardContent className="flex items-center p-4 h-full">
           <Award className="h-7 w-7 text-green-400 mr-3 flex-shrink-0" />
           <div>
             <p className="text-sm text-gray-400">Your Rank</p>
@@ -43,8 +43,8 @@ export function StatsPanel({ points, jobsCompleted, ordersFulfilled, rank }: Sta
         </CardContent>
       </Card>
       
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardContent className="flex items-center p-4">
+      <Card className="bg-gray-800/50 border-gray-700 h-full">
+        <CardContent className="flex items-center p-4 h-full">
           <Layers className="h-7 w-7 text-amber-400 mr-3 flex-shrink-0" />
           <div>
             <p className="text-sm text-gray-400">Orders Fulfilled</p>
