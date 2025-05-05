@@ -42,7 +42,10 @@ const Hero = () => {
           enable: true,
           mode: "repulse",
         },
-        resize: true,
+        resize: {
+          enable: true,
+          delay: 0.5
+        },
       },
       modes: {
         bubble: {
@@ -72,10 +75,11 @@ const Hero = () => {
         width: 1,
       },
       move: {
-        bounce: false,
-        direction: "none" as const,
+        direction: "none",
         enable: true,
-        outMode: "bounce" as const,
+        outModes: {
+          default: "bounce"
+        },
         random: false,
         speed: 2,
         straight: false,
@@ -83,7 +87,7 @@ const Hero = () => {
       number: {
         density: {
           enable: true,
-          value_area: 800
+          area: 800
         },
         value: 80
       },
@@ -156,6 +160,8 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <Particles
           id="tsparticles"
+          init={particlesInit}
+          loaded={particlesLoaded}
           options={particlesOptions}
           className="absolute inset-0"
         />
