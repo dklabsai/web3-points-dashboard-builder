@@ -57,7 +57,7 @@ const Dashboard = () => {
           <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mb-6">
             <WelcomeHeader user={user} />
             
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+            <div className="flex flex-col lg:flex-row items-start justify-between gap-6">
               <div className="w-full">
                 <StatsPanel
                   points={points}
@@ -67,7 +67,7 @@ const Dashboard = () => {
                 />
               </div>
               
-              <div className="w-full max-w-xs flex flex-col gap-3">
+              <div className="w-full lg:w-auto mt-4 lg:mt-0 flex flex-col gap-3">
                 <Button 
                   onClick={toggleActive} 
                   variant={active ? "destructive" : "default"}
@@ -75,12 +75,12 @@ const Dashboard = () => {
                   size="lg"
                 >
                   <Power className="mr-2" />
-                  {active ? 'Stop Computing' : 'Start Computing'}
+                  <span className="inline">{active ? 'Stop Computing' : 'Start Computing'}</span>
                 </Button>
                 
                 <Button variant="outline" className="w-full">
                   <Zap className="mr-2" size={18} />
-                  Boost Earnings
+                  <span className="inline">Boost Earnings</span>
                 </Button>
               </div>
             </div>
@@ -98,7 +98,7 @@ const Dashboard = () => {
               </Button>
             </div>
             
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 { title: "AI Model Training", reward: 25, difficulty: "Medium", status: "open" },
                 { title: "Data Processing Task", reward: 15, difficulty: "Easy", status: "open" },

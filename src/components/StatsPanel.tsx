@@ -12,7 +12,7 @@ interface StatsPanelProps {
 
 export function StatsPanel({ points, jobsCompleted, ordersFulfilled, rank }: StatsPanelProps) {
   return (
-    <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full">
+    <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
       <Card className="bg-gray-800/50 border-gray-700">
         <CardContent className="flex items-center p-4">
           <Cpu className="h-7 w-7 text-blue-400 mr-3 flex-shrink-0" />
