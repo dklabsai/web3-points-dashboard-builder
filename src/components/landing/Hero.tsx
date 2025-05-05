@@ -5,8 +5,8 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import { loadSlim } from "@tsparticles/slim";
-import Particles, { ISourceOptions } from "@tsparticles/react";
-import type { Engine } from "@tsparticles/engine";
+import Particles from "@tsparticles/react";
+import type { Engine, ISourceOptions } from "@tsparticles/engine";
 import type { Container } from "@tsparticles/engine";
 
 const Hero = () => {
