@@ -70,12 +70,13 @@ export const Hero = () => {
                 straight: false,
               },
               number: {
-                density: {
-                  enable: true,
-                  value: 800
-                },
-                value: 50,
-              },
+  value: 50,      // total particles
+  density: {
+    enable: true, // turn density on
+    area: 800,    // ✔ use `area`, not `value`
+  },
+},
+
               opacity: {
                 value: 0.3,
               },
