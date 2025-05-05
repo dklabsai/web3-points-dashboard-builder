@@ -5,6 +5,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { loadSlim } from "@tsparticles/slim";
+import Particles from "@tsparticles/react";
 
 export const Hero = () => {
   const { isConnected } = useAccount();
@@ -17,96 +19,13 @@ export const Hero = () => {
   
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const [ParticlesComponent, setParticlesComponent] = useState<React.ComponentType<any> | null>(null);
+  const [isParticlesLoaded, setIsParticlesLoaded] = useState(false);
 
-  // Load Particles dynamically to avoid SSR issues
-  useEffect(() => {
-    let isMounted = true;
-    
-    const loadParticles = async () => {
-      try {
-        // Dynamically import the particles libraries
-        const { loadFull } = await import("tsparticles");
-        const Particles = (await import("react-tsparticles")).default;
-        
-        const initParticles = async (engine: any) => {
-          await loadFull(engine);
-        };
-        
-        // Create a wrapper component for particles
-        const ParticlesWrapper = () => (
-          <Particles
-            id="tsparticles"
-            init={initParticles}
-            options={{
-              fullScreen: { enable: false },
-              background: {
-                color: {
-                  value: "transparent",
-                },
-              },
-              fpsLimit: 30,
-              particles: {
-                color: {
-                  value: "#ffffff",
-                },
-                links: {
-                  color: "#ffffff",
-                  distance: 150,
-                  enable: true,
-                  opacity: 0.2,
-                  width: 1,
-                },
-                collisions: {
-                  enable: false,
-                },
-                move: {
-                  direction: "none",
-                  enable: true,
-                  outModes: {
-                    default: "bounce",
-                  },
-                  random: true,
-                  speed: 0.5,
-                  straight: false,
-                },
-                number: {
-                  density: {
-                    enable: true,
-                    area: 800,
-                  },
-                  value: 50,
-                },
-                opacity: {
-                  value: 0.3,
-                },
-                shape: {
-                  type: "circle",
-                },
-                size: {
-                  value: { min: 1, max: 3 },
-                },
-              },
-              detectRetina: true,
-            }}
-            className="absolute inset-0 z-0"
-          />
-        );
-        
-        if (isMounted) {
-          setParticlesComponent(() => ParticlesWrapper);
-        }
-      } catch (error) {
-        console.error("Failed to load particles:", error);
-      }
-    };
-    
-    loadParticles();
-    
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  // Initialize particles
+  const particlesInit = async (engine) => {
+    await loadSlim(engine);
+    setIsParticlesLoaded(true);
+  };
 
   return (
     <section 
@@ -114,12 +33,64 @@ export const Hero = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start scroll-mt-0"
     >
       {/* Particle Background */}
-      <div id="tsparticles" className="absolute inset-0 z-0"></div>
-      {ParticlesComponent && (
-        <React.Suspense fallback={<div>Loading particles...</div>}>
-          <ParticlesComponent />
-        </React.Suspense>
-      )}
+      <div className="absolute inset-0 z-0">
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          options={{
+            fullScreen: { enable: false },
+            background: {
+              color: {
+                value: "transparent",
+              },
+            },
+            fpsLimit: 30,
+            particles: {
+              color: {
+                value: "#ffffff",
+              },
+              links: {
+                color: "#ffffff",
+                distance: 150,
+                enable: true,
+                opacity: 0.2,
+                width: 1,
+              },
+              collisions: {
+                enable: false,
+              },
+              move: {
+                direction: "none",
+                enable: true,
+                outModes: {
+                  default: "bounce",
+                },
+                random: true,
+                speed: 0.5,
+                straight: false,
+              },
+              number: {
+                density: {
+                  enable: true,
+                  area: 800,
+                },
+                value: 50,
+              },
+              opacity: {
+                value: 0.3,
+              },
+              shape: {
+                type: "circle",
+              },
+              size: {
+                value: { min: 1, max: 3 },
+              },
+            },
+            detectRetina: true,
+          }}
+          className="absolute inset-0 z-0"
+        />
+      </div>
 
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900 z-10"></div>
