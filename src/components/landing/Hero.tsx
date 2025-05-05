@@ -5,7 +5,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
 import { loadSlim } from "@tsparticles/slim";
-import Particles from "@tsparticles/react";
+import Particles, { ISourceOptions } from "@tsparticles/react";
 import type { Engine } from "@tsparticles/engine";
 import type { Container } from "@tsparticles/engine";
 
@@ -23,7 +23,7 @@ const Hero = () => {
     console.log("Particles loaded", container);
   };
 
-  const particlesOptions = {
+  const particlesOptions: ISourceOptions = {
     fullScreen: {
       enable: false,
       zIndex: 0
@@ -33,7 +33,6 @@ const Hero = () => {
     },
     fpsLimit: 60,
     interactivity: {
-      detectsOn: "window" as const,
       events: {
         onClick: {
           enable: true,
@@ -43,11 +42,7 @@ const Hero = () => {
           enable: true,
           mode: "repulse",
         },
-        resize: {
-          enable: true,
-          delay: 0.5,
-          factor: 1
-        }
+        resize: true,
       },
       modes: {
         bubble: {
@@ -78,9 +73,9 @@ const Hero = () => {
       },
       move: {
         bounce: false,
-        direction: "none" as const, // Fixed: using 'as const' to specify the correct type
+        direction: "none" as const,
         enable: true,
-        outMode: "bounce" as const, // Fixed: using 'as const' to specify the correct type
+        outMode: "bounce" as const,
         random: false,
         speed: 2,
         straight: false,
@@ -93,26 +88,12 @@ const Hero = () => {
         value: 80
       },
       opacity: {
-        anim: {
-          enable: true,
-          minimumValue: 0.1,
-          speed: 1,
-          sync: false
-        },
-        random: true,
         value: 0.5,
       },
       shape: {
         type: "circle",
       },
       size: {
-        anim: {
-          enable: false,
-          size_min: 0.1,
-          speed: 40,
-          sync: false
-        },
-        random: true,
         value: 5,
       },
     },
@@ -175,8 +156,6 @@ const Hero = () => {
       <div className="absolute inset-0 z-0">
         <Particles
           id="tsparticles"
-          init={particlesInit}
-          loaded={particlesLoaded}
           options={particlesOptions}
           className="absolute inset-0"
         />

@@ -7,6 +7,7 @@ import { EarningsEstimator } from '@/components/landing/EarningsEstimator';
 import { CallToAction } from '@/components/landing/CallToAction';
 import { ScrollProgressBar } from '@/components/landing/ScrollProgressBar';
 import { ThemeToggle } from '@/components/landing/ThemeToggle';
+import { StatsHeaderAnimation } from '@/components/landing/StatsHeaderAnimation';
 import { useTheme } from '@/hooks/useTheme';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
@@ -37,6 +38,7 @@ const Index = () => {
             >
               dklabs.io
             </motion.div>
+            <StatsHeaderAnimation />
           </div>
           
           <div className="flex items-center space-x-4">
