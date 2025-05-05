@@ -15,6 +15,11 @@ import { Power, ArrowRight, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useState } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
+import ClaimTokensCard from '@/components/dashboard/ClaimTokensCard';
+import JobsInProgress from '@/components/dashboard/JobsInProgress';
+import { useUnclaimedTokens } from '@/hooks/useUnclaimedTokens';
+import { useInProgressJobs } from '@/hooks/useInProgressJobs';
+import { useToast } from '@/hooks/use-toast';
 
 // GPU models for earnings estimation (moved from LandingPage)
 const GPU_MODELS = {
@@ -38,6 +43,29 @@ const Dashboard = () => {
     rank, 
     loading 
   } = useUser();
+  
+  const { 
+    unclaimedTokens, 
+    claimTokens, 
+    refreshUnclaimedTokens 
+  } = useUnclaimedTokens();
+  
+  const {
+    jobs,
+    cancelJob,
+    completeJob,
+  } = useInProgressJobs();
+  
+  const { toast } = useToast();
+
+  // Handle job completion
+  const handleJobComplete = (job: any) => {
+    completeJob(job);
+    toast({
+      title: "Job completed!",
+      description: `"${job.name}" was successfully completed. +25 pts`,
+    });
+  };
 
   if (loading) {
     return <DashboardSkeleton />;
@@ -90,6 +118,15 @@ const Dashboard = () => {
           {/* Activity Chart */}
           <ActivityChart points={points} active={active} />
           
+          {/* Jobs In Progress */}
+          {jobs.length > 0 && (
+            <JobsInProgress 
+              jobs={jobs} 
+              onCancelJob={cancelJob} 
+              onJobComplete={handleJobComplete}
+            />
+          )}
+          
           {/* Available Tasks */}
           <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mt-6 md:mt-8">
             <div className="flex justify-between items-center mb-4">
@@ -131,6 +168,15 @@ const Dashboard = () => {
           <Leaderboard 
             items={leaderboard} 
             currentWallet={user?.wallet || ''} 
+          />
+          
+          {/* Claim Tokens Card */}
+          <ClaimTokensCard 
+            unclaimedTokens={unclaimedTokens}
+            onClaim={async () => {
+              await claimTokens();
+              refreshUnclaimedTokens();
+            }}
           />
           
           {/* Recent Activity */}

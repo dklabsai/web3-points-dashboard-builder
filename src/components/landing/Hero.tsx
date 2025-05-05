@@ -1,181 +1,259 @@
+import React from 'react';
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { motion } from "framer-motion";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
-import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
-import { loadSlim } from "@tsparticles/slim";
-import Particles from "@tsparticles/react";
-
-export const Hero = () => {
-  const { isConnected } = useAccount();
-  const navigate = useNavigate();
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"]
-  });
-  
-  const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const [isParticlesLoaded, setIsParticlesLoaded] = useState(false);
-
-  // Initialize particles
-  const particlesInit = async (engine) => {
-    await loadSlim(engine);
-    setIsParticlesLoaded(true);
+const Hero = () => {
+  const particlesInit = async (main: any) => {
+    await loadFull(main);
   };
 
+  const particlesLoaded = (container: any) => {
+    console.log(container);
+  };
+
+  const particlesOptions = {
+    fullScreen: {
+      enable: false,
+      zIndex: 0
+    },
+    detectRetina: true,
+    fpsLimit: 60,
+    interactivity: {
+      detectsOn: "canvas",
+      events: {
+        onClick: {
+          enable: true,
+          mode: "push",
+        },
+        onHover: {
+          enable: true,
+          mode: "repulse",
+        },
+        resize: true,
+      },
+      modes: {
+        bubble: {
+          distance: 400,
+          duration: 2,
+          opacity: 0.8,
+          size: 40,
+        },
+        push: {
+          quantity: 4,
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4,
+        },
+      },
+    },
+    particles: {
+      color: {
+        value: "#ffffff",
+      },
+      links: {
+        color: "#ffffff",
+        distance: 150,
+        enable: true,
+        opacity: 0.5,
+        width: 1,
+      },
+      move: {
+        bounce: false,
+        direction: "none",
+        enable: true,
+        outMode: "bounce",
+        random: false,
+        speed: 2,
+        straight: false,
+      },
+      number: {
+        density: {
+          enable: true,
+          value_area: 800
+        },
+        value: 80
+      },
+      opacity: {
+        anim: {
+          enable: true,
+          minimumValue: 0.1,
+          opacity_min: 0.1,
+          speed: 1,
+          sync: false
+        },
+        random: true,
+        value: 0.5,
+      },
+      shape: {
+        character: {
+          fill: false,
+          font: "Verdana",
+          style: "",
+          value: "*",
+          weight: "400"
+        },
+        image: {
+          height: 100,
+          replace_color: true,
+          src: "images/github.svg",
+          width: 100
+        },
+        polygon: {
+          nb_sides: 5
+        },
+        stroke: {
+          color: "#000000",
+          width: 0
+        },
+        type: "circle"
+      },
+      size: {
+        anim: {
+          enable: false,
+          size_min: 0.1,
+          speed: 40,
+          sync: false
+        },
+        random: true,
+        value: 5,
+      },
+    },
+    detectRetina: true,
+  }
+
   return (
-    <section 
-      ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden snap-start scroll-mt-0"
-    >
-      {/* Particle Background */}
-      <div className="absolute inset-0 z-0">
-        <Particles
-          id="tsparticles"
-          init={particlesInit}
-          options={{
-            fullScreen: { enable: false },
-            background: {
-              color: {
-                value: "transparent",
-              },
-            },
-            fpsLimit: 30,
-            particles: {
-              color: {
-                value: "#ffffff",
-              },
-              links: {
-                color: "#ffffff",
-                distance: 150,
-                enable: true,
-                opacity: 0.2,
-                width: 1,
-              },
-              collisions: {
-                enable: false,
-              },
-              move: {
-                direction: "none",
-                enable: true,
-                outModes: {
-                  default: "bounce",
-                },
-                random: true,
-                speed: 0.5,
-                straight: false,
-              },
-              number: {
-  value: 50,      // total particles
-  density: {
-    enable: true, // turn density on
-    area: 800,    // ✔ use `area`, not `value`
-  },
-},
+    <div className="min-h-screen bg-gray-950 text-white overflow-hidden relative">
+      {/* Background gradient */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'radial-gradient(circle at center, #0f172a 0%, #020617 100%)',
+          zIndex: 0
+        }}
+      ></div>
 
-              opacity: {
-                value: 0.3,
-              },
-              shape: {
-                type: "circle",
-              },
-              size: {
-                value: { min: 1, max: 3 },
-              },
-            },
-            detectRetina: true,
-          }}
-          className="absolute inset-0 z-0"
-        />
-      </div>
+      {/* Animated GPU images */}
+      <motion.div
+        className="absolute inset-0 z-10 opacity-30"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3 }}
+        transition={{ duration: 2 }}
+      >
+        {[1, 2, 3, 4, 5].map((_, i) => (
+          <motion.img
+            key={i}
+            src="https://cdn.jsdelivr.net/gh/nvidia-archive/nvidia-opengl/nvidia-gllogo.png"
+            className="absolute"
+            style={{
+              width: `${Math.random() * 100 + 100}px`,
+              filter: 'blur(2px) brightness(1.5)',
+            }}
+            initial={{
+              x: Math.random() * window.innerWidth,
+              y: Math.random() * window.innerHeight,
+              opacity: 0.3
+            }}
+            animate={{
+              x: [
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerWidth
+              ],
+              y: [
+                Math.random() * window.innerHeight,
+                Math.random() * window.innerHeight
+              ],
+              opacity: [0.3, 0.7, 0.3],
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration: Math.random() * 20 + 30,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        ))}
+      </motion.div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/60 to-gray-900 z-10"></div>
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        loaded={particlesLoaded}
+        options={particlesOptions}
+      />
 
       {/* Content */}
-      <motion.div 
-        style={{ y, opacity }}
-        className="container mx-auto px-4 z-20 text-center"
-      >
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-6xl sm:text-7xl md:text-8xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-neonBlue via-blue-400 to-teal-300"
+      <div className="relative z-20 container mx-auto px-4 py-12 md:py-20 flex flex-col items-center">
+        <motion.div
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="text-center mb-12 md:mb-16"
         >
-          dklabs.io
-        </motion.h1>
-        
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto text-gray-300"
-        >
-          The decentralized computing network that rewards your contribution to the future of technology
-        </motion.p>
-        
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4"
-        >
-          {isConnected ? (
-            <Button 
-              onClick={() => navigate('/dashboard')} 
-              size="lg"
-              className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            >
-              Go to Dashboard
-            </Button>
-          ) : (
-            <div className="scale-110 transform hover:scale-125 transition-transform duration-300">
-              <ConnectButton 
-                showBalance={false}
-                chainStatus="icon" 
-                accountStatus="address"
-              />
-            </div>
-          )}
-          
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="border border-white/30 backdrop-blur-sm hover:bg-white/10 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
-          >
-            Learn More
-          </Button>
-        </motion.div>
-        
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        >
-          <div className="flex flex-col items-center">
-            <p className="text-sm text-gray-400 mb-2">Scroll to explore</p>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">
-              <motion.div 
-                className="w-1 h-2 bg-white rounded-full"
-                animate={{ 
-                  y: [0, 12, 0],
-                }}
-                transition={{ 
-                  repeat: Infinity,
-                  duration: 1.5,
-                  ease: "easeInOut" 
-                }}
-              />
-            </div>
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent"
+            style={{ backgroundImage: 'linear-gradient(to right, #00C8FF, #92FE9D)' }}>
+            dklabs.io
+          </h1>
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-8 md:mb-10 max-w-2xl mx-auto">
+            Rent out your GPU. Earn points. Join the decentralized computing revolution.
+          </p>
+
+          <div className="flex justify-center mb-10 md:mb-12">
+            <ConnectButton />
           </div>
         </motion.div>
-      </motion.div>
-    </section>
+
+        {/* How It Works Section */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-12 md:mb-20 w-full max-w-4xl"
+        >
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-10 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+            {[
+              {
+                title: "Connect",
+                description: "Connect your wallet securely to get started",
+                icon: "🔗"
+              },
+              {
+                title: "Share",
+                description: "Share your GPU's computing power with the network",
+                icon: "💻"
+              },
+              {
+                title: "Earn",
+                description: "Earn rewards in tokens and points for your contribution",
+                icon: "💰"
+              }
+            ].map((step, i) => (
+              <div key={i} className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 text-center">
+                <div className="text-3xl md:text-4xl mb-3 md:mb-4">{step.icon}</div>
+                <h3 className="text-lg md:text-xl font-bold mb-2">{step.title}</h3>
+                <p className="text-gray-400">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Earnings Calculator */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="bg-gray-900/70 backdrop-blur-lg p-6 md:p-8 rounded-xl w-full max-w-md border border-gray-800"
+        >
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">Estimate Earnings</h2>
+
+          {/* GPU Dropdown and Earnings Estimate - omitted for brevity */}
+        </motion.div>
+      </div>
+    </div>
   );
 };
+
+export default Hero;
