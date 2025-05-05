@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { motion } from 'framer-motion';
-import useUser from '@/hooks/useUser';
+import { useUser } from '@/hooks/useUser';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Dashboard = () => {

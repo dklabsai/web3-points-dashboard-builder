@@ -1,7 +1,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
-import { supabase } from '@/lib/supabaseClient';
+import { supabase, Database } from '@/lib/supabaseClient';
 
 interface UserProfile {
   wallet: string;
