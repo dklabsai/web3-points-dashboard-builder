@@ -5,16 +5,16 @@ import {
   RainbowKitProvider,
   darkTheme,
 } from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig } from 'wagmi';
+import { 
+  http, 
+  createConfig,
+} from 'wagmi';
 import { mainnet, sepolia, polygonMumbai } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
 
 // Configure chains for mainnet, sepolia, and polygonMumbai
-const { chains, publicClient } = configureChains(
-  [mainnet, sepolia, polygonMumbai],
-  [publicProvider()]
-);
+const chains = [mainnet, sepolia, polygonMumbai];
 
+// Setup public client with HTTP provider
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'YOUR_PROJECT_ID';
 
 // Setup wallet connectors
@@ -24,11 +24,15 @@ const { connectors } = getDefaultWallets({
   chains
 });
 
-// Create Wagmi config
+// Create Wagmi config with HTTP transport
 export const wagmiConfig = createConfig({
-  autoConnect: true,
+  chains,
+  transports: {
+    [mainnet.id]: http(),
+    [sepolia.id]: http(),
+    [polygonMumbai.id]: http(),
+  },
   connectors,
-  publicClient,
 });
 
 export { chains, RainbowKitProvider, darkTheme };
