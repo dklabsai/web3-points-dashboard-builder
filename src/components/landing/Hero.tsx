@@ -1,17 +1,26 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { motion } from "framer-motion";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount } from "wagmi";
+import { useNavigate } from "react-router-dom";
 import { loadSlim } from "@tsparticles/slim";
 import Particles from "@tsparticles/react";
-import type { Engine, Container } from "tsparticles-engine";
+import type { Engine } from "@tsparticles/engine";
+import type { Container } from "@tsparticles/engine";
 
 const Hero = () => {
+  const { isConnected } = useAccount();
+  const navigate = useNavigate();
+  const [isParticlesLoaded, setIsParticlesLoaded] = useState(false);
+
   const particlesInit = async (engine: Engine): Promise<void> => {
     await loadSlim(engine);
   };
 
   const particlesLoaded = (container?: Container): void => {
-    console.log(container);
+    setIsParticlesLoaded(true);
+    console.log("Particles loaded", container);
   };
 
   const particlesOptions = {
@@ -19,7 +28,9 @@ const Hero = () => {
       enable: false,
       zIndex: 0
     },
-    detectRetina: true,
+    background: { 
+      color: { value: "transparent" }
+    },
     fpsLimit: 60,
     interactivity: {
       detectsOn: "window" as const,
@@ -32,7 +43,11 @@ const Hero = () => {
           enable: true,
           mode: "repulse",
         },
-        resize: true,
+        resize: {
+          enable: true,
+          delay: 0.5,
+          factor: 1
+        }
       },
       modes: {
         bubble: {
@@ -81,7 +96,6 @@ const Hero = () => {
         anim: {
           enable: true,
           minimumValue: 0.1,
-          opacity_min: 0.1,
           speed: 1,
           sync: false
         },
@@ -89,27 +103,7 @@ const Hero = () => {
         value: 0.5,
       },
       shape: {
-        character: {
-          fill: false,
-          font: "Verdana",
-          style: "",
-          value: "*",
-          weight: "400"
-        },
-        image: {
-          height: 100,
-          replace_color: true,
-          src: "images/github.svg",
-          width: 100
-        },
-        polygon: {
-          nb_sides: 5
-        },
-        stroke: {
-          color: "#000000",
-          width: 0
-        },
-        type: "circle"
+        type: "circle",
       },
       size: {
         anim: {
@@ -122,6 +116,7 @@ const Hero = () => {
         value: 5,
       },
     },
+    detectRetina: true,
   };
 
   return (
@@ -177,12 +172,15 @@ const Hero = () => {
         ))}
       </motion.div>
 
-      <Particles
-        id="tsparticles"
-        init={particlesInit}
-        loaded={particlesLoaded}
-        options={particlesOptions}
-      />
+      <div className="absolute inset-0 z-0">
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          loaded={particlesLoaded}
+          options={particlesOptions}
+          className="absolute inset-0"
+        />
+      </div>
 
       {/* Content */}
       <div className="relative z-20 container mx-auto px-4 py-12 md:py-20 flex flex-col items-center">
@@ -201,7 +199,16 @@ const Hero = () => {
           </p>
 
           <div className="flex justify-center mb-10 md:mb-12">
-            <ConnectButton />
+            {!isConnected ? (
+              <ConnectButton />
+            ) : (
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500 text-white font-bold py-2 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Go to Dashboard
+              </button>
+            )}
           </div>
         </motion.div>
 
