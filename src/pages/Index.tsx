@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Hero } from '@/components/landing/Hero';
+import Hero from '@/components/landing/Hero';
 import { HowItWorks } from '@/components/landing/HowItWorks';
 import { EarningsEstimator } from '@/components/landing/EarningsEstimator';
 import { CallToAction } from '@/components/landing/CallToAction';

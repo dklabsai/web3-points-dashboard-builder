@@ -1,15 +1,16 @@
 import React from 'react';
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import { motion } from "framer-motion";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { loadSlim } from "@tsparticles/slim";
+import Particles from "@tsparticles/react";
+import type { Engine, Container } from "tsparticles-engine";
 
 const Hero = () => {
-  const particlesInit = async (main: any) => {
-    await loadFull(main);
+  const particlesInit = async (engine: Engine): Promise<void> => {
+    await loadSlim(engine);
   };
 
-  const particlesLoaded = (container: any) => {
+  const particlesLoaded = (container?: Container): void => {
     console.log(container);
   };
 
@@ -21,7 +22,7 @@ const Hero = () => {
     detectRetina: true,
     fpsLimit: 60,
     interactivity: {
-      detectsOn: "canvas",
+      detectsOn: "window" as const,
       events: {
         onClick: {
           enable: true,
@@ -121,8 +122,7 @@ const Hero = () => {
         value: 5,
       },
     },
-    detectRetina: true,
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white overflow-hidden relative">
