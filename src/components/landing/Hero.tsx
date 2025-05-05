@@ -4,10 +4,9 @@ import { motion } from "framer-motion";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 import { useNavigate } from "react-router-dom";
-import { loadSlim } from "@tsparticles/slim";
 import Particles from "@tsparticles/react";
-import type { Engine, ISourceOptions } from "@tsparticles/engine";
-import type { Container } from "@tsparticles/engine";
+import type { Engine, Container } from "tsparticles-engine";
+import { loadSlim } from "@tsparticles/slim";
 
 const Hero = () => {
   const { isConnected } = useAccount();
@@ -16,92 +15,11 @@ const Hero = () => {
 
   const particlesInit = async (engine: Engine): Promise<void> => {
     await loadSlim(engine);
-  };
-
-  const particlesLoaded = (container?: Container): void => {
     setIsParticlesLoaded(true);
-    console.log("Particles loaded", container);
   };
 
-  const particlesOptions: ISourceOptions = {
-    fullScreen: {
-      enable: false,
-      zIndex: 0
-    },
-    background: { 
-      color: { value: "transparent" }
-    },
-    fpsLimit: 60,
-    interactivity: {
-      events: {
-        onClick: {
-          enable: true,
-          mode: "push",
-        },
-        onHover: {
-          enable: true,
-          mode: "repulse",
-        },
-        resize: {
-          enable: true,
-          delay: 0.5
-        },
-      },
-      modes: {
-        bubble: {
-          distance: 400,
-          duration: 2,
-          opacity: 0.8,
-          size: 40,
-        },
-        push: {
-          quantity: 4,
-        },
-        repulse: {
-          distance: 200,
-          duration: 0.4,
-        },
-      },
-    },
-    particles: {
-      color: {
-        value: "#ffffff",
-      },
-      links: {
-        color: "#ffffff",
-        distance: 150,
-        enable: true,
-        opacity: 0.5,
-        width: 1,
-      },
-      move: {
-        direction: "none",
-        enable: true,
-        outModes: {
-          default: "bounce"
-        },
-        random: false,
-        speed: 2,
-        straight: false,
-      },
-      number: {
-        density: {
-          enable: true,
-          area: 800
-        },
-        value: 80
-      },
-      opacity: {
-        value: 0.5,
-      },
-      shape: {
-        type: "circle",
-      },
-      size: {
-        value: 5,
-      },
-    },
-    detectRetina: true,
+  const particlesLoaded = async (container?: Container): Promise<void> => {
+    console.log("Particles loaded", container);
   };
 
   return (
@@ -162,7 +80,52 @@ const Hero = () => {
           id="tsparticles"
           init={particlesInit}
           loaded={particlesLoaded}
-          options={particlesOptions}
+          options={{
+            fullScreen: { enable: false, zIndex: 0 },
+            background: {
+              color: { value: "transparent" },
+            },
+            fpsLimit: 30,
+            detectRetina: true,
+            interactivity: {
+              detectsOn: "canvas",
+              events: {
+                onClick: { enable: false, mode: "push" },
+                onHover: { enable: true, mode: "repulse" },
+                resize: { enable: true, delay: 0.5 }
+              },
+              modes: {
+                push: { quantity: 4 },
+                repulse: { distance: 100, duration: 0.4 }
+              }
+            },
+            particles: {
+              number: {
+                value: 50,
+                density: { enable: true, area: 800 }
+              },
+              color: { value: "#ffffff" },
+              shape: { type: "circle" },
+              opacity: { value: 0.3 },
+              size: { value: { min: 1, max: 3 } },
+              links: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.2,
+                width: 1
+              },
+              move: {
+                enable: true,
+                speed: 0.5,
+                direction: "none",
+                random: true,
+                straight: false,
+                outModes: { default: "bounce" }
+              },
+              collisions: { enable: false }
+            }
+          }}
           className="absolute inset-0"
         />
       </div>
