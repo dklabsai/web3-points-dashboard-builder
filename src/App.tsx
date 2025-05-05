@@ -21,8 +21,6 @@ function App() {
       <RainbowKitProvider 
         chains={chains} 
         theme={{
-          accentColor: '#00C8FF', // neonBlue
-          accentColorForeground: 'white',
           borderRadius: 'medium',
         }}
       >

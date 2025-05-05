@@ -18,7 +18,7 @@ export type Database = {
   };
 };
 
-const url = import.meta.env.VITE_SUPABASE_URL!;
+const url = "https://db.uawkfwpkyrtzddmkxdzw.supabase.co";
 const key = import.meta.env.VITE_SUPABASE_ANON_KEY!;
 // Specify <Database> so `from('users')` is typed correctly
 export const supabase = createClient<Database>(url, key);
