@@ -1,8 +1,7 @@
 
 import React from 'react';
 import './App.css';
-import { WagmiConfig, RainbowKitProvider, chains } from '@/lib/wallet';
-import { wagmiClient } from '@/lib/wallet';
+import { WagmiConfig, RainbowKitProvider, chains, darkTheme, wagmiClient } from '@/lib/wallet';
 import { useUser } from './hooks/useUser';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -15,15 +14,11 @@ import NotFound from '@/pages/NotFound';
 // Create a client for React Query
 const queryClient = new QueryClient();
 
-function App() {
+export default function App() {
   return (
-    <WagmiConfig config={wagmiClient}>
-      <RainbowKitProvider 
-        chains={chains} 
-        theme={{
-          borderRadius: 'medium',
-        }}
-      >
+    <WagmiConfig client={wagmiClient}>
+      {/* Use darkTheme() with overrides, not a raw object */}
+      <RainbowKitProvider chains={chains} theme={darkTheme({ borderRadius: 'medium' })}>
         <Router>
           <QueryClientProvider client={queryClient}>
             <Routes>
@@ -38,5 +33,3 @@ function App() {
     </WagmiConfig>
   );
 }
-
-export default App;
