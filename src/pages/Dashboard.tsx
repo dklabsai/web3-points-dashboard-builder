@@ -1,8 +1,6 @@
-
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useUser } from '@/hooks/useUser';
-import { Skeleton } from '@/components/ui/skeleton';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { motion } from 'framer-motion';
 
@@ -12,7 +10,8 @@ import { ActivityChart } from '@/components/ActivityChart';
 import { Leaderboard } from '@/components/Leaderboard';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { Button } from '@/components/ui/button';
-import { Power } from 'lucide-react';
+import { Power, ArrowRight, Zap } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 // GPU models for earnings estimation (moved from LandingPage)
 const GPU_MODELS = {
@@ -48,45 +47,112 @@ const Dashboard = () => {
 
   // User is connected, show dashboard
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <div className="container mx-auto px-4 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          
-          {/* Main Stats */}
-          <div className="lg:col-span-8">
-            <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mb-8">
-              <WelcomeHeader user={user} />
+    <div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Main Stats */}
+        <div className="lg:col-span-8">
+          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mb-8">
+            <WelcomeHeader user={user} />
+            
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
+              <StatsPanel
+                points={points}
+                jobsCompleted={user?.jobs_completed || 0}
+                ordersFulfilled={user?.orders_fulfilled || 0}
+                rank={rank}
+              />
               
-              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
-                <StatsPanel
-                  points={points}
-                  jobsCompleted={user?.jobs_completed || 0}
-                  ordersFulfilled={user?.orders_fulfilled || 0}
-                  rank={rank}
-                />
-                
+              <div className="mt-6 md:mt-0 flex flex-col gap-3">
                 <Button 
                   onClick={toggleActive} 
                   variant={active ? "destructive" : "default"}
-                  className={`${active ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'} mt-4 md:mt-0 md:ml-4`}
+                  className={`${active ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} w-full`}
+                  size="lg"
                 >
                   <Power className="mr-2" />
                   {active ? 'Stop Computing' : 'Start Computing'}
                 </Button>
+                
+                <Button variant="outline" className="w-full">
+                  <Zap className="mr-2" size={18} />
+                  Boost Earnings
+                </Button>
               </div>
             </div>
+          </div>
 
-            {/* Activity Chart */}
-            <ActivityChart points={points} active={active} />
-          </div>
+          {/* Activity Chart */}
+          <ActivityChart points={points} active={active} />
           
-          {/* Leaderboard */}
-          <div className="lg:col-span-4">
-            <Leaderboard 
-              items={leaderboard} 
-              currentWallet={user?.wallet || ''} 
-            />
+          {/* Available Tasks */}
+          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Available Tasks</h2>
+              <Button variant="ghost" size="sm" className="text-blue-400 flex items-center">
+                View All <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+            
+            <div className="space-y-4">
+              {[
+                { title: "AI Model Training", reward: 25, difficulty: "Medium", status: "open" },
+                { title: "Data Processing Task", reward: 15, difficulty: "Easy", status: "open" },
+                { title: "Render Animation Sequence", reward: 40, difficulty: "Hard", status: "open" }
+              ].map((task, i) => (
+                <Card key={i} className="bg-gray-800/50 border-gray-700">
+                  <CardContent className="p-4">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <h3 className="font-medium">{task.title}</h3>
+                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-400">
+                          <span className="bg-blue-900/50 text-blue-300 px-1.5 py-0.5 rounded-md text-xs">
+                            {task.difficulty}
+                          </span>
+                          <span>{task.reward} pts</span>
+                        </div>
+                      </div>
+                      <Button size="sm" variant="secondary">Claim Task</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
+        </div>
+        
+        {/* Leaderboard */}
+        <div className="lg:col-span-4">
+          <Leaderboard 
+            items={leaderboard} 
+            currentWallet={user?.wallet || ''} 
+          />
+          
+          {/* Recent Activity */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mt-8"
+          >
+            <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+            <div className="space-y-4">
+              {[
+                { action: "Earned points", amount: "+10 pts", time: "5m ago" },
+                { action: "Completed job", amount: "+25 pts", time: "1h ago" },
+                { action: "Started computing", amount: "", time: "2h ago" },
+              ].map((activity, i) => (
+                <div key={i} className="flex justify-between items-center border-b border-gray-800 pb-2 last:border-0 last:pb-0">
+                  <div>
+                    <p className="text-sm">{activity.action}</p>
+                    <p className="text-xs text-gray-500">{activity.time}</p>
+                  </div>
+                  {activity.amount && (
+                    <p className="text-green-400 font-medium">{activity.amount}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
@@ -183,6 +249,41 @@ const LandingContent = () => {
           </div>
         </motion.div>
 
+        {/* How It Works Section */}
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-20 w-full max-w-4xl"
+        >
+          <h2 className="text-3xl font-bold mb-10 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { 
+                title: "Connect", 
+                description: "Connect your wallet securely to get started", 
+                icon: "🔗" 
+              },
+              { 
+                title: "Share", 
+                description: "Share your GPU's computing power with the network", 
+                icon: "💻" 
+              },
+              { 
+                title: "Earn", 
+                description: "Earn rewards in tokens and points for your contribution", 
+                icon: "💰" 
+              }
+            ].map((step, i) => (
+              <div key={i} className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 text-center">
+                <div className="text-4xl mb-4">{step.icon}</div>
+                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+                <p className="text-gray-400">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         {/* Earnings Calculator */}
         <motion.div
           initial={{ y: 50, opacity: 0 }}
@@ -269,5 +370,6 @@ const DashboardSkeleton = () => (
 
 // Add missing useState import
 import { useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default Dashboard;

@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Trophy, Medal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface LeaderboardItem { wallet: string; points: number; }
 interface LeaderboardProps {
@@ -21,7 +22,7 @@ export function Leaderboard({ items, currentWallet, loading = false }: Leaderboa
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl sticky top-4"
+      className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl sticky top-20"
     >
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold flex items-center">
@@ -67,6 +68,12 @@ export function Leaderboard({ items, currentWallet, loading = false }: Leaderboa
             No data available
           </div>
         )}
+      </div>
+
+      <div className="mt-4 pt-4 border-t border-gray-800">
+        <Button variant="outline" className="w-full text-sm" size="sm">
+          View Full Leaderboard
+        </Button>
       </div>
     </motion.div>
   );
