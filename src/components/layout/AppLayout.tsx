@@ -11,11 +11,11 @@ export default function AppLayout() {
     <div className="min-h-screen bg-gray-950 text-white dark:bg-gray-950 dark:text-white">
       {isConnected && <MainNavbar />}
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 max-w-full lg:max-w-7xl">
         <Outlet />
       </main>
       
-      <footer className="container mx-auto px-4 py-6 mt-10 border-t border-gray-800">
+      <footer className="container mx-auto px-4 py-6 mt-10 border-t border-gray-800 max-w-full lg:max-w-7xl">
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
           <div className="mb-4 md:mb-0">
             <p>© 2025 dklabs.io - The Decentralized Computing Network</p>

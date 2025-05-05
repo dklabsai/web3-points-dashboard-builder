@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useUser } from '@/hooks/useUser';
@@ -12,6 +13,8 @@ import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
 import { Button } from '@/components/ui/button';
 import { Power, ArrowRight, Zap } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useState } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 // GPU models for earnings estimation (moved from LandingPage)
 const GPU_MODELS = {
@@ -48,21 +51,23 @@ const Dashboard = () => {
   // User is connected, show dashboard
   return (
     <div>
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
         {/* Main Stats */}
         <div className="lg:col-span-8">
-          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mb-8">
+          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mb-6">
             <WelcomeHeader user={user} />
             
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-6">
-              <StatsPanel
-                points={points}
-                jobsCompleted={user?.jobs_completed || 0}
-                ordersFulfilled={user?.orders_fulfilled || 0}
-                rank={rank}
-              />
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+              <div className="w-full">
+                <StatsPanel
+                  points={points}
+                  jobsCompleted={user?.jobs_completed || 0}
+                  ordersFulfilled={user?.orders_fulfilled || 0}
+                  rank={rank}
+                />
+              </div>
               
-              <div className="mt-6 md:mt-0 flex flex-col gap-3">
+              <div className="w-full max-w-xs flex flex-col gap-3">
                 <Button 
                   onClick={toggleActive} 
                   variant={active ? "destructive" : "default"}
@@ -85,7 +90,7 @@ const Dashboard = () => {
           <ActivityChart points={points} active={active} />
           
           {/* Available Tasks */}
-          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mt-8">
+          <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mt-6 md:mt-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Available Tasks</h2>
               <Button variant="ghost" size="sm" className="text-blue-400 flex items-center">
@@ -101,7 +106,7 @@ const Dashboard = () => {
               ].map((task, i) => (
                 <Card key={i} className="bg-gray-800/50 border-gray-700">
                   <CardContent className="p-4">
-                    <div className="flex justify-between items-center">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                       <div>
                         <h3 className="font-medium">{task.title}</h3>
                         <div className="flex items-center gap-2 mt-1 text-sm text-gray-400">
@@ -111,7 +116,7 @@ const Dashboard = () => {
                           <span>{task.reward} pts</span>
                         </div>
                       </div>
-                      <Button size="sm" variant="secondary">Claim Task</Button>
+                      <Button size="sm" variant="secondary" className="mt-2 sm:mt-0 w-full sm:w-auto">Claim Task</Button>
                     </div>
                   </CardContent>
                 </Card>
@@ -132,7 +137,7 @@ const Dashboard = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mt-8"
+            className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mt-6 md:mt-8"
           >
             <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
             <div className="space-y-4">
@@ -229,22 +234,22 @@ const LandingContent = () => {
       </motion.div>
 
       {/* Content */}
-      <div className="relative z-20 container mx-auto px-4 py-20 flex flex-col items-center">
+      <div className="relative z-20 container mx-auto px-4 py-12 md:py-20 flex flex-col items-center">
         <motion.div
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
-          className="text-center mb-16"
+          className="text-center mb-12 md:mb-16"
         >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent" 
+          <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 bg-clip-text text-transparent" 
             style={{ backgroundImage: 'linear-gradient(to right, #00C8FF, #92FE9D)' }}>
             dklabs.io
           </h1>
-          <p className="text-xl md:text-2xl font-light mb-10 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl lg:text-2xl font-light mb-8 md:mb-10 max-w-2xl mx-auto">
             Rent out your GPU. Earn points. Join the decentralized computing revolution.
           </p>
           
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-10 md:mb-12">
             <ConnectButton />
           </div>
         </motion.div>
@@ -254,10 +259,10 @@ const LandingContent = () => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="mb-20 w-full max-w-4xl"
+          className="mb-12 md:mb-20 w-full max-w-4xl"
         >
-          <h2 className="text-3xl font-bold mb-10 text-center">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-10 text-center">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {[
               { 
                 title: "Connect", 
@@ -275,9 +280,9 @@ const LandingContent = () => {
                 icon: "💰" 
               }
             ].map((step, i) => (
-              <div key={i} className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 text-center">
-                <div className="text-4xl mb-4">{step.icon}</div>
-                <h3 className="text-xl font-bold mb-2">{step.title}</h3>
+              <div key={i} className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 text-center">
+                <div className="text-3xl md:text-4xl mb-3 md:mb-4">{step.icon}</div>
+                <h3 className="text-lg md:text-xl font-bold mb-2">{step.title}</h3>
                 <p className="text-gray-400">{step.description}</p>
               </div>
             ))}
@@ -289,9 +294,9 @@ const LandingContent = () => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="bg-gray-900/70 backdrop-blur-lg p-8 rounded-xl w-full max-w-md border border-gray-800"
+          className="bg-gray-900/70 backdrop-blur-lg p-6 md:p-8 rounded-xl w-full max-w-md border border-gray-800"
         >
-          <h2 className="text-2xl font-bold mb-6 text-center">Estimate Earnings</h2>
+          <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">Estimate Earnings</h2>
           
           <div className="space-y-4">
             <div>
@@ -367,9 +372,5 @@ const DashboardSkeleton = () => (
     </div>
   </div>
 );
-
-// Add missing useState import
-import { useState } from 'react';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export default Dashboard;
