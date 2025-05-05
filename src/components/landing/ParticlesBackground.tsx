@@ -9,8 +9,8 @@ interface ParticlesBackgroundProps {
 }
 
 const ParticlesBackground: React.FC<ParticlesBackgroundProps> = ({ className }) => {
-  const particlesInit = (engine: Engine): Promise<void> => {
-    return loadSlim(engine);
+  const particlesInit = async (engine: Engine): Promise<void> => {
+    await loadSlim(engine);
   };
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
