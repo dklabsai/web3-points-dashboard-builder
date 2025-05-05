@@ -5,11 +5,13 @@ import { useAccount } from 'wagmi';
 import { useUser } from '@/hooks/useUser';
 import { Skeleton } from '@/components/ui/skeleton';
 
-// Import our new components
+// Import components
 import { StatsPanel } from '@/components/StatsPanel';
 import { ActivityChart } from '@/components/ActivityChart';
 import { Leaderboard } from '@/components/Leaderboard';
 import WelcomeHeader from '@/components/dashboard/WelcomeHeader';
+import { Button } from '@/components/ui/button';
+import { Power } from 'lucide-react';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -45,12 +47,23 @@ const Dashboard = () => {
             <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl mb-8">
               <WelcomeHeader user={user} />
               
-              <StatsPanel
-                points={points}
-                jobsCompleted={user?.jobs_completed || 0}
-                ordersFulfilled={user?.orders_fulfilled || 0}
-                rank={rank}
-              />
+              <div className="flex items-center justify-between mb-6">
+                <StatsPanel
+                  points={points}
+                  jobsCompleted={user?.jobs_completed || 0}
+                  ordersFulfilled={user?.orders_fulfilled || 0}
+                  rank={rank}
+                />
+                
+                <Button 
+                  onClick={toggleActive} 
+                  variant={active ? "destructive" : "default"}
+                  className={`${active ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'} ml-4`}
+                >
+                  <Power className="mr-2" />
+                  {active ? 'Stop Computing' : 'Start Computing'}
+                </Button>
+              </div>
             </div>
 
             {/* Activity Chart */}
@@ -91,8 +104,7 @@ const DashboardSkeleton = () => (
           {/* Activity Chart Skeleton */}
           <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-6 border border-gray-800 shadow-xl">
             <Skeleton className="h-6 w-40 mb-4" />
-            <Skeleton className="h-10 w-full mb-2" />
-            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-48 w-full mb-2" />
           </div>
         </div>
         
