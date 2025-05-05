@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import { User } from '@/hooks/useUser';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Award, Layers, Wallet } from 'lucide-react';
 
 interface UserStatsProps {
   user: User | null;
@@ -41,16 +42,25 @@ const UserStats = ({ user, points, active, toggleActive, rank }: UserStatsProps)
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
         <h3 className="text-lg font-medium text-gray-300 mb-2">Your Stats</h3>
         <div className="space-y-3">
-          <div className="flex justify-between">
-            <span className="text-gray-400">Jobs Completed</span>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <Layers className="h-5 w-5 text-purple-400 mr-2" />
+              <span className="text-gray-400">Jobs Completed</span>
+            </div>
             <span className="font-bold">{user?.jobs_completed || 0}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-400">Orders Fulfilled</span>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <Wallet className="h-5 w-5 text-amber-400 mr-2" />
+              <span className="text-gray-400">Orders Fulfilled</span>
+            </div>
             <span className="font-bold">{user?.orders_fulfilled || 0}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-gray-400">Leaderboard Rank</span>
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <Award className="h-5 w-5 text-green-400 mr-2" />
+              <span className="text-gray-400">Leaderboard Rank</span>
+            </div>
             <span className="font-bold">
               {rank ? `#${rank}` : '-'}
             </span>
