@@ -86,13 +86,74 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'gradient-background': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' },
+				},
+				'rotate-y-180': {
+					'0%': { transform: 'rotateY(0deg)' },
+					'100%': { transform: 'rotateY(180deg)' },
+				},
+				'ripple': {
+					'0%': { transform: 'scale(0)', opacity: '1' },
+					'100%': { transform: 'scale(4)', opacity: '0' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'gradient-background': 'gradient-background 15s ease infinite',
+				'ripple': 'ripple 1s linear',
+			},
+			transitionProperty: {
+				'height': 'height',
+				'transform': 'transform',
+			},
+			rotate: {
+				'y-180': 'rotateY(180deg)',
+			},
+			perspective: {
+				'1000': '1000px',
+			},
+			transformStyle: {
+				'3d': 'preserve-3d',
+				'flat': 'flat',
+			},
+			backfaceVisibility: {
+				'visible': 'visible',
+				'hidden': 'hidden',
+			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		function({ addUtilities }) {
+			const newUtilities = {
+				'.backface-hidden': {
+					'backface-visibility': 'hidden',
+				},
+				'.backface-visible': {
+					'backface-visibility': 'visible',
+				},
+				'.preserve-3d': {
+					'transform-style': 'preserve-3d',
+				},
+				'.perspective-1000': {
+					'perspective': '1000px',
+				},
+				'.rotate-y-180': {
+					'transform': 'rotateY(180deg)',
+				},
+				'.scroll-snap-type-y-mandatory': {
+					'scroll-snap-type': 'y mandatory',
+				},
+				'.snap-start': {
+					'scroll-snap-align': 'start',
+				},
+			};
+			addUtilities(newUtilities);
+		},
+	],
 } satisfies Config;
