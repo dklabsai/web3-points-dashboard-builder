@@ -20,12 +20,11 @@ function App() {
     <WagmiConfig config={wagmiClient}>
       <RainbowKitProvider 
         chains={chains} 
-        theme={darkTheme({
+        theme={{
           accentColor: '#00C8FF', // neonBlue
           accentColorForeground: 'white',
           borderRadius: 'medium',
-          overlayBlur: 'small',
-        })}
+        }}
       >
         <Router>
           <QueryClientProvider client={queryClient}>
