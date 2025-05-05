@@ -70,13 +70,10 @@ export const Hero = () => {
                 straight: false,
               },
               number: {
-               density: {
-  enable: true,
-  area: {
-    value: 800       // ← use `.area.value` instead of `value_area`
-  }
-}
-,
+                density: {
+                  enable: true,
+                  value: 800
+                },
                 value: 50,
               },
               opacity: {

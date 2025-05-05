@@ -11,7 +11,7 @@ interface WelcomeHeaderProps {
 const WelcomeHeader = ({ user, loading = false }: WelcomeHeaderProps) => {
   if (loading || !user) {
     return (
-      <div className="mb-8">
+      <div className="mb-6">
         <Skeleton className="h-8 w-64 mb-2" />
         <Skeleton className="h-4 w-96" />
       </div>
@@ -23,7 +23,7 @@ const WelcomeHeader = ({ user, loading = false }: WelcomeHeaderProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="mb-8"
+      className="mb-6"
     >
       <h2 className="text-2xl font-bold mb-2">
         Welcome, {user.wallet.slice(0, 6)}...{user.wallet.slice(-4)}

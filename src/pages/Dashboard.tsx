@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { useUser } from '@/hooks/useUser';
@@ -56,13 +57,16 @@ const Dashboard = () => {
           <div className="bg-gray-900/70 backdrop-blur-lg rounded-xl p-4 md:p-6 border border-gray-800 shadow-xl mb-6">
             <WelcomeHeader user={user} />
             
-            <div className="mt-6">
-              <StatsPanel
-                points={points}
-                jobsCompleted={user?.jobs_completed || 0}
-                ordersFulfilled={user?.orders_fulfilled || 0}
-                rank={rank}
-              />
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Your Stats</h2>
+              <div className="flex flex-wrap items-stretch justify-between gap-4">
+                <StatsPanel
+                  points={points}
+                  jobsCompleted={user?.jobs_completed || 0}
+                  ordersFulfilled={user?.orders_fulfilled || 0}
+                  rank={rank}
+                />
+              </div>
             </div>
               
             <div className="w-full mt-6 flex flex-col sm:flex-row gap-3">

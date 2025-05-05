@@ -4,7 +4,7 @@ import { useAccount } from 'wagmi';
 import { Link, useLocation } from 'react-router-dom';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useTheme } from '@/hooks/useTheme';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { 
   DropdownMenu,
@@ -14,7 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Bell, Moon, Sun, User, Settings, LogOut, Zap, Home, Globe } from 'lucide-react';
+import { Bell, Moon, Sun, User, Settings, LogOut, Zap, Home } from 'lucide-react';
 
 export default function MainNavbar() {
   const { address } = useAccount();
@@ -64,34 +64,9 @@ export default function MainNavbar() {
           </Link>
         </div>
 
-        {/* Network Selector & Settings Menu */}
-        <div className="flex items-center space-x-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-2" title="Network Selector">
-                <Globe className="h-4 w-4 text-green-500" />
-                <span className="hidden sm:inline">Ethereum Network</span>
-                <span className="sm:hidden">ETH</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Select Blockchain Network</DropdownMenuLabel>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                <span>Ethereum Mainnet</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-purple-500"></div>
-                <span>Polygon PoS</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-500"></div>
-                <span>Arbitrum One</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          <div className="flex items-center space-x-1">
+        {/* Settings Menu & User Options */}
+        <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2">
             {/* Theme Toggle */}
             <Button 
               variant="ghost"
@@ -139,13 +114,14 @@ export default function MainNavbar() {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* User Menu */}
+            {/* User Menu with Enhanced Avatar */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full w-8 h-8" title="User Menu">
-                  <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-blue-900 text-blue-100 text-xs">
-                      {address ? address.substring(2, 4).toUpperCase() : "??"}
+                <Button variant="ghost" className="p-0 hover:bg-gray-800 rounded-full" title="User Menu">
+                  <Avatar className="w-10 h-10 border-2 border-transparent hover:border-blue-500 transition-colors">
+                    <AvatarImage src={`https://avatars.dicebear.com/api/initials/${address?.substring(2, 4) || 'DK'}.svg`} />
+                    <AvatarFallback className="bg-blue-900 text-blue-100">
+                      {address ? address.substring(2, 4).toUpperCase() : "DK"}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
