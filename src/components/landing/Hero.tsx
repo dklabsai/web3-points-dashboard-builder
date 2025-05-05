@@ -1,11 +1,9 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { type Container, type Engine } from "tsparticles-engine";
-import { loadFull } from "tsparticles";
-import { Button } from '@/components/ui/button';
-import { useAccount } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
+import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 export const Hero = () => {
@@ -19,10 +17,96 @@ export const Hero = () => {
   
   const y = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const [ParticlesComponent, setParticlesComponent] = useState<React.ComponentType<any> | null>(null);
 
-  const particlesInit = async (engine: Engine) => {
-    await loadFull(engine);
-  };
+  // Load Particles dynamically to avoid SSR issues
+  useEffect(() => {
+    let isMounted = true;
+    
+    const loadParticles = async () => {
+      try {
+        // Dynamically import the particles libraries
+        const { loadFull } = await import("tsparticles");
+        const Particles = (await import("react-tsparticles")).default;
+        
+        const initParticles = async (engine: any) => {
+          await loadFull(engine);
+        };
+        
+        // Create a wrapper component for particles
+        const ParticlesWrapper = () => (
+          <Particles
+            id="tsparticles"
+            init={initParticles}
+            options={{
+              fullScreen: { enable: false },
+              background: {
+                color: {
+                  value: "transparent",
+                },
+              },
+              fpsLimit: 30,
+              particles: {
+                color: {
+                  value: "#ffffff",
+                },
+                links: {
+                  color: "#ffffff",
+                  distance: 150,
+                  enable: true,
+                  opacity: 0.2,
+                  width: 1,
+                },
+                collisions: {
+                  enable: false,
+                },
+                move: {
+                  direction: "none",
+                  enable: true,
+                  outModes: {
+                    default: "bounce",
+                  },
+                  random: true,
+                  speed: 0.5,
+                  straight: false,
+                },
+                number: {
+                  density: {
+                    enable: true,
+                    area: 800,
+                  },
+                  value: 50,
+                },
+                opacity: {
+                  value: 0.3,
+                },
+                shape: {
+                  type: "circle",
+                },
+                size: {
+                  value: { min: 1, max: 3 },
+                },
+              },
+              detectRetina: true,
+            }}
+            className="absolute inset-0 z-0"
+          />
+        );
+        
+        if (isMounted) {
+          setParticlesComponent(() => ParticlesWrapper);
+        }
+      } catch (error) {
+        console.error("Failed to load particles:", error);
+      }
+    };
+    
+    loadParticles();
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <section 
@@ -31,9 +115,9 @@ export const Hero = () => {
     >
       {/* Particle Background */}
       <div id="tsparticles" className="absolute inset-0 z-0"></div>
-      {typeof window !== 'undefined' && (
+      {ParticlesComponent && (
         <React.Suspense fallback={<div>Loading particles...</div>}>
-          <ParticlesComponent init={particlesInit} />
+          <ParticlesComponent />
         </React.Suspense>
       )}
 
@@ -121,69 +205,5 @@ export const Hero = () => {
         </motion.div>
       </motion.div>
     </section>
-  );
-};
-
-// Create a separate component for the particles to allow for lazy loading
-const ParticlesComponent = ({ init }: { init: (engine: Engine) => Promise<void> }) => {
-  const { default: Particles } = React.lazy(() => import('react-tsparticles'));
-  
-  return (
-    <Particles
-      id="tsparticles"
-      init={init}
-      options={{
-        fullScreen: { enable: false },
-        background: {
-          color: {
-            value: "transparent",
-          },
-        },
-        fpsLimit: 30,
-        particles: {
-          color: {
-            value: "#ffffff",
-          },
-          links: {
-            color: "#ffffff",
-            distance: 150,
-            enable: true,
-            opacity: 0.2,
-            width: 1,
-          },
-          collisions: {
-            enable: false,
-          },
-          move: {
-            direction: "none",
-            enable: true,
-            outModes: {
-              default: "bounce",
-            },
-            random: true,
-            speed: 0.5,
-            straight: false,
-          },
-          number: {
-            density: {
-              enable: true,
-              area: 800,
-            },
-            value: 50,
-          },
-          opacity: {
-            value: 0.3,
-          },
-          shape: {
-            type: "circle",
-          },
-          size: {
-            value: { min: 1, max: 3 },
-          },
-        },
-        detectRetina: true,
-      }}
-      className="absolute inset-0 z-0"
-    />
   );
 };
