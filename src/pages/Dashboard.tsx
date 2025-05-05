@@ -12,8 +12,8 @@ const Dashboard = () => {
   const { 
     user, 
     points, 
-    isComputing, 
-    toggleCompute, 
+    active, 
+    toggleActive, 
     leaderboard, 
     rank, 
     loading 
@@ -52,19 +52,19 @@ const Dashboard = () => {
                   <div className="flex items-baseline">
                     <span className="text-4xl font-bold text-white">{points}</span>
                     <span className="ml-2 text-sm text-green-400">
-                      {isComputing && '+ 1 pt/sec'}
+                      {active && '+ 1 pt/sec'}
                     </span>
                   </div>
                   <div className="mt-4">
                     <button
-                      onClick={toggleCompute}
+                      onClick={toggleActive}
                       className={`px-4 py-2 rounded-md w-full font-medium transition-colors ${
-                        isComputing 
+                        active 
                           ? 'bg-red-600 hover:bg-red-700 text-white' 
                           : 'bg-green-600 hover:bg-green-700 text-white'
                       }`}
                     >
-                      {isComputing ? 'Stop Compute' : 'Start Compute'}
+                      {active ? 'Stop Compute' : 'Start Compute'}
                     </button>
                   </div>
                 </div>

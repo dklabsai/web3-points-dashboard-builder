@@ -94,7 +94,7 @@ export function useUser(): UseUserReturn {
       try {
         const { data, error } = await supabase
           .from('users')
-          .select('wallet, points')
+          .select('wallet, points, jobs_completed, orders_fulfilled')
           .order('points', { ascending: false })
           .limit(10);
           
@@ -104,7 +104,7 @@ export function useUser(): UseUserReturn {
         }
           
         if (data) {
-          setLeaderboard(data);
+          setLeaderboard(data as UserProfile[]);
           const pos = data.findIndex(u => u.wallet === user.wallet);
           setRank(pos !== -1 ? pos + 1 : null);
         }
